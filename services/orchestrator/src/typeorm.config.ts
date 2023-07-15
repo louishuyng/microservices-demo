@@ -15,7 +15,7 @@ const typeOrmConfig: TypeOrmModuleOptions = {
     __dirname + '/migration/**/*.ts',
     __dirname + '/migration/**/*.js',
   ],
-  synchronize: false,
+  synchronize: true,
 };
 
 export = typeOrmConfig;
