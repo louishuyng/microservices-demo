@@ -9,16 +9,20 @@ import { FlowModule } from './flow/flow.module';
 import { UsecaseRequestModule } from './usecase-request/usecase-request.module';
 import { LoggingModule } from './logging/logging.module';
 import * as typeOrmConfig from './typeorm.config';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CronjobsModule } from './cronjobs/cronjobs.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot(typeOrmConfig),
+    ScheduleModule.forRoot(),
     ServiceModule,
     ActionModule,
     UsecaseModule,
     FlowModule,
     UsecaseRequestModule,
     LoggingModule,
+    CronjobsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

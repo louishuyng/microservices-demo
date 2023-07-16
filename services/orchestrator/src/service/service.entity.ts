@@ -37,4 +37,12 @@ export class Service extends BaseEntity {
 
   @OneToMany(() => Action, (action) => action.service)
   actions: Action[];
+
+  public get healthCheckUrl(): string {
+    if (!this.port) {
+      return `http://${this.host}${this.heathPath}`;
+    }
+
+    return `http://${this.host}:${this.port}${this.heathPath}`;
+  }
 }
