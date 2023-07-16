@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-  @Get('/healthy')
+  @Get('/health')
   @HttpCode(200)
   getHello(): string {
     return this.appService.healthy();

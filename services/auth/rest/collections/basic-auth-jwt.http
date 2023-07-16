@@ -1,0 +1,26 @@
+# Generate JWT Tokens
+POST http://localhost:3001/api/jwt
+Content-Type: application/json
+
+{
+  "userId": 1
+}
+
+# Delete JWT Tokens
+DELETE http://localhost:3001/api/jwt
+Content-Type: application/json
+
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY4OTQ5MTI1MiwiZXhwIjoxNjg5NTc3NjUyfQ.QhXhM-SFe7RgTGRX6NR1VDuFHmSNhyTkJ7Ww3BSe4lM"
+}
+
+# Introspect token
+POST http://localhost:3001/api/jwt/introspect
+Content-Type: application/json
+
+{
+  "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY4OTQ5MTMyMywiZXhwIjoxNjg5NTc3NzIzfQ.w7Y6wlsZjdXX6nz7Lxw1KMh1DjpXEwWlnt9kg6mbVNQ"
+}
+
+# Healthy Check
+GET http://localhost:3001/health

@@ -1,5 +1,5 @@
 # Create Service
-POST http://localhost:3000/api/services
+POST http://localhost:3002/api/services
 Content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 # Update Service
-PUT http://localhost:3000/api/services/5
+PUT http://localhost:3002/api/services/5
 Content-Type: application/json
 
 {
@@ -17,14 +17,13 @@ Content-Type: application/json
 }
 
 # List Service
-GET http://localhost:3000/api/services
+GET http://localhost:3002/api/services
 
 # Detail Service
-GET http://localhost:3000/api/services/9
+GET http://localhost:3002/api/services/9
 
 # Check Healthy State
-GET http://localhost:3000/api/services/9/healthy
+GET http://localhost:3002/api/services/9/healthy
 
 # Delete Service
-DELETE http://localhost:3000/api/services/6
-POETE http://localhost:3000/api/services/1
+DELETE http://localhost:3002/api/services/6
