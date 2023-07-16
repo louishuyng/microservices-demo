@@ -63,3 +63,22 @@ export const createService = async (data: ServicePayload): Promise<void> => {
     throw err;
   }
 };
+
+export const updateService = async (
+  id: any,
+  data: ServicePayload
+): Promise<void> => {
+  try {
+    await fetch(`${ORCHESTRATOR_URL}/services/${id}`, {
+      method: "PUT",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
