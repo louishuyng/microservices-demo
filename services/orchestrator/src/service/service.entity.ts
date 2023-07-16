@@ -8,6 +8,12 @@ import {
 } from 'typeorm';
 import { Action } from '../action/action.entity';
 
+export enum HealthState {
+  NO_DATA = 'no_data',
+  HEALTHY = 'healthy',
+  UNHEALTHY = 'unhealthy',
+}
+
 @Entity()
 @Unique(['name'])
 export class Service extends BaseEntity {
@@ -23,6 +29,20 @@ export class Service extends BaseEntity {
   @Column({ type: 'int', nullable: true })
   port: number;
 
+  @Column({ type: 'enum', enum: HealthState, default: HealthState.NO_DATA })
+  healthState: HealthState;
+
+  @Column({ type: 'varchar', default: '/health' })
+  heathPath: string;
+
   @OneToMany(() => Action, (action) => action.service)
   actions: Action[];
+
+  public get healthCheckUrl(): string {
+    if (!this.port) {
+      return `http://${this.host}${this.heathPath}`;
+    }
+
+    return `http://${this.host}:${this.port}${this.heathPath}`;
+  }
 }

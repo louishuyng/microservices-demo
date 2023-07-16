@@ -1,4 +1,5 @@
-POST http://localhost:3000/api/services
+# Create Service
+POST http://localhost:3002/api/services
 Content-Type: application/json
 
 {
@@ -7,15 +8,22 @@ Content-Type: application/json
   "port": 3002
 }
 
-PUT http://localhost:3000/api/services/5
+# Update Service
+PUT http://localhost:3002/api/services/5
 Content-Type: application/json
 
 {
   "name": "transport"
 }
 
-GET http://localhost:3000/api/services
+# List Service
+GET http://localhost:3002/api/services
 
-GET http://localhost:3000/api/services/1
+# Detail Service
+GET http://localhost:3002/api/services/9
 
-DELETE http://localhost:3000/api/services/1
+# Check Health State
+GET http://localhost:3002/api/services/9/health
+
+# Delete Service
+DELETE http://localhost:3002/api/services/6
