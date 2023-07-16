@@ -17,6 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useToast } from "@/components/ui/use-toast";
+import { createService } from "@/services/service.api";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -28,15 +30,31 @@ const formSchema = z.object({
   port: z.string().optional(),
 });
 
-export function ServiceNewCard() {
+export function ServiceNewCard({
+  setOpenDialog,
+  fetchServices,
+}: {
+  setOpenDialog: any;
+  fetchServices: any;
+}) {
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    "use_server";
+
+    await createService({
+      ...values,
+      port: values.port ? parseInt(values.port) : undefined,
+    });
+    toast({
+      description: "Successfully created service",
+    });
+    setOpenDialog(false);
+    fetchServices();
   }
 
   return (

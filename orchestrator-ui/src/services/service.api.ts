@@ -41,3 +41,25 @@ export const deleteService = async (id: any): Promise<void> => {
     throw err;
   }
 };
+
+export type ServicePayload = {
+  name: string;
+  host: string;
+  port?: number;
+};
+
+export const createService = async (data: ServicePayload): Promise<void> => {
+  try {
+    await fetch(`${ORCHESTRATOR_URL}/services`, {
+      method: "POST",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
