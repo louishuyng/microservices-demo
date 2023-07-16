@@ -7,6 +7,7 @@ const types = [
   "devops",
   "test",
   "refactor",
+  "api",
 ];
 
 module.exports = {

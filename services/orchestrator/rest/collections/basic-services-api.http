@@ -1,0 +1,21 @@
+POST http://localhost:3000/api/services
+Content-Type: application/json
+
+{
+  "name": "payment",
+  "host": "localhost",
+  "port": 3002
+}
+
+PUT http://localhost:3000/api/services/5
+Content-Type: application/json
+
+{
+  "name": "transport"
+}
+
+GET http://localhost:3000/api/services
+
+GET http://localhost:3000/api/services/1
+
+DELETE http://localhost:3000/api/services/1
