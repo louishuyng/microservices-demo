@@ -12,7 +12,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { CreateServiceDto } from './dto/create.dto';
-import { HealthyState, Service } from './service.entity';
+import { HealthState, Service } from './service.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { UpdateServiceDto } from './dto/update.dto';
@@ -96,7 +96,7 @@ export class ServiceController {
     }
   }
 
-  @Get(':id/healthy')
+  @Get(':id/health')
   @HttpCode(200)
   async checkServiceHealth(
     @Param() params: any,
@@ -107,7 +107,7 @@ export class ServiceController {
       const service = await this.serviceRepository.findOneBy({ id });
 
       return {
-        isHealthy: service.healthyState === HealthyState.HEALTHY,
+        isHealthy: service.healthState === HealthState.HEALTHY,
       };
     } catch (error) {
       throw new HttpException(

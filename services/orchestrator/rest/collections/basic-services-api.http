@@ -22,8 +22,8 @@ GET http://localhost:3002/api/services
 # Detail Service
 GET http://localhost:3002/api/services/9
 
-# Check Healthy State
-GET http://localhost:3002/api/services/9/healthy
+# Check Health State
+GET http://localhost:3002/api/services/9/health
 
 # Delete Service
 DELETE http://localhost:3002/api/services/6
