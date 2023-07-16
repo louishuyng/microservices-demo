@@ -1,3 +1,4 @@
+# Create Service
 POST http://localhost:3000/api/services
 Content-Type: application/json
 
@@ -7,6 +8,7 @@ Content-Type: application/json
   "port": 3002
 }
 
+# Update Service
 PUT http://localhost:3000/api/services/5
 Content-Type: application/json
 
@@ -14,8 +16,15 @@ Content-Type: application/json
   "name": "transport"
 }
 
+# List Service
 GET http://localhost:3000/api/services
 
-GET http://localhost:3000/api/services/1
+# Detail Service
+GET http://localhost:3000/api/services/9
 
-DELETE http://localhost:3000/api/services/1
+# Check Healthy State
+GET http://localhost:3000/api/services/9/healthy
+
+# Delete Service
+DELETE http://localhost:3000/api/services/6
+POETE http://localhost:3000/api/services/1
