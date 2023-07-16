@@ -6,8 +6,19 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { deleteService } from "@/services/service.api";
+import { useRouter } from "next/navigation";
 
-export function ServiceRemove() {
+export function ServiceRemove({ id }: { id: any }) {
+  const router = useRouter();
+
+  async function handleDelete() {
+    "use_server";
+
+    await deleteService(id);
+    router.replace("/services");
+  }
+
   return (
     <>
       <DialogHeader>
@@ -15,7 +26,9 @@ export function ServiceRemove() {
       </DialogHeader>
       <DialogFooter>
         <div className="flex space-x-3 mt-3">
-          <Button className="bg-red-500 text-white">Yes delete it</Button>
+          <Button className="bg-red-500 text-white" onClick={handleDelete}>
+            Yes delete it
+          </Button>
         </div>
       </DialogFooter>
     </>

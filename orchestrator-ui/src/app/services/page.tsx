@@ -3,8 +3,12 @@ import { Button } from "@/components/ui/button";
 import { ServiceCard } from "./components/service-card";
 import { ServiceNewCard } from "./components/service-new-card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { getListService } from "@/services/service.api";
+import { HealthState } from "@/models/service.model";
 
-export default function ServicePage() {
+export default async function ServicePage() {
+  const services = await getListService();
+
   return (
     <div className="flex-1 space-y-10 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
@@ -24,16 +28,14 @@ export default function ServicePage() {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <ServiceCard
-          serviceName="Auth"
-          serviceId={1}
-          serviceUrl="http://localhost:3000"
-        />
-        <ServiceCard
-          serviceName="Payment"
-          serviceId={2}
-          serviceUrl="http://localhost:3001"
-        />
+        {services.map((service) => (
+          <ServiceCard
+            serviceName={service.name}
+            serviceId={service.id}
+            serviceUrl={service.url}
+            isHeathy={service.healthyState === HealthState.HEALTHY}
+          />
+        ))}
       </div>
     </div>
   );

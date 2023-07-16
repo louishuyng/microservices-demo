@@ -39,10 +39,14 @@ export class Service extends BaseEntity {
   actions: Action[];
 
   public get healthCheckUrl(): string {
+    return `http://${this.serviceUrl}${this.heathPath}`;
+  }
+
+  public get serviceUrl(): string {
     if (!this.port) {
-      return `http://${this.host}${this.heathPath}`;
+      return `http://${this.host}`;
     }
 
-    return `http://${this.host}:${this.port}${this.heathPath}`;
+    return `http://${this.host}:${this.port}`;
   }
 }

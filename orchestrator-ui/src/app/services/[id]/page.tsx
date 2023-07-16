@@ -20,6 +20,8 @@ import * as z from "zod";
 import { ArrowLeftIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { ServiceRemove } from "../components/service-remove";
+import { getService } from "@/services/service.api";
+import { use } from "react";
 
 const formSchema = z.object({
   name: z.string().min(2),
@@ -30,8 +32,15 @@ export default function ServiceDetail() {
   const params = useParams();
   const router = useRouter();
 
+  const service = use(getService(params.id));
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: service?.name,
+      host: service?.host,
+      port: service?.port,
+    },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -59,7 +68,7 @@ export default function ServiceDetail() {
               </Button>
             </DialogTrigger>
             <DialogContent>
-              <ServiceRemove />
+              <ServiceRemove id={service?.id} />
             </DialogContent>
           </Dialog>
         </div>
