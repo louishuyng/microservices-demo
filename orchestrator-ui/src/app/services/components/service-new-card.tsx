@@ -84,7 +84,7 @@ export function ServiceNewCard() {
             name="port"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Host</FormLabel>
+                <FormLabel>Port</FormLabel>
                 <FormControl>
                   <Input placeholder="8080" {...field} />
                 </FormControl>
