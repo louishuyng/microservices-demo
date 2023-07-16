@@ -20,6 +20,10 @@ import * as z from "zod";
 import { ArrowLeftIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { ServiceRemove } from "../components/service-remove";
+import { getService, updateService } from "@/services/service.api";
+import { use, useEffect, useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { ServiceModel } from "@/models/service.model";
 
 const formSchema = z.object({
   name: z.string().min(2),
@@ -29,15 +33,42 @@ const formSchema = z.object({
 export default function ServiceDetail() {
   const params = useParams();
   const router = useRouter();
+  const { toast } = useToast();
+  const [service, setService] = useState<ServiceModel>();
+
+  async function fetchService() {
+    "use_server";
+    const service = await getService(params.id);
+
+    if (!service) {
+      return;
+    }
+
+    setService(service);
+
+    form.setValue("name", service.name);
+    form.setValue("host", service.host);
+    form.setValue("port", service.port);
+  }
+
+  useEffect(() => {
+    fetchService();
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    "use_server";
+
+    await updateService(params.id, {
+      ...values,
+      port: values.port ? parseInt(values.port) : undefined,
+    });
+    toast({
+      description: "Successfully updated service",
+    });
   }
 
   function goBackToList() {
@@ -59,7 +90,7 @@ export default function ServiceDetail() {
               </Button>
             </DialogTrigger>
             <DialogContent>
-              <ServiceRemove />
+              <ServiceRemove id={service?.id} />
             </DialogContent>
           </Dialog>
         </div>

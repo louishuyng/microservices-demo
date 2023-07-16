@@ -8,12 +8,14 @@ interface ServiceCardProps {
   serviceName: string;
   serviceUrl: string;
   serviceId: number;
+  isHeathy: boolean;
 }
 
 export function ServiceCard({
   serviceName,
   serviceUrl,
   serviceId,
+  isHeathy,
 }: ServiceCardProps) {
   const router = useRouter();
 
@@ -28,7 +30,7 @@ export function ServiceCard({
           <VercelLogoIcon />
           <CardTitle className="text-xl font-medium">{serviceName}</CardTitle>
         </div>
-        <div style={{ color: "green" }}>
+        <div style={{ color: isHeathy ? "green" : "red" }}>
           <CircleIcon />
         </div>
       </CardHeader>
