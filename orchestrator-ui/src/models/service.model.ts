@@ -9,14 +9,14 @@ export class ServiceModel {
   name: string;
   host: string;
   port?: string;
-  healthyState: HealthState;
+  healthState: HealthState;
 
   constructor(service: any) {
     this.id = service.id;
     this.name = service.name;
     this.host = service.host;
     this.port = service.port;
-    this.healthyState = service.healthyState;
+    this.healthState = service.healthState;
   }
 
   get url(): string {

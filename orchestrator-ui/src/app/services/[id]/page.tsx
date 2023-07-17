@@ -48,7 +48,7 @@ export default function ServiceDetail() {
 
     form.setValue("name", service.name);
     form.setValue("host", service.host);
-    form.setValue("port", service.port);
+    form.setValue("port", service.port && service.port.toString());
   }
 
   useEffect(() => {

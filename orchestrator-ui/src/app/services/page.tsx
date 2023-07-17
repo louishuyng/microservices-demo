@@ -21,6 +21,14 @@ export default function ServicePage() {
 
   useEffect(() => {
     fetchServices();
+
+    const interval = setInterval(() => {
+      fetchServices();
+    }, 5000);
+
+    () => {
+      clearInterval(interval);
+    };
   }, []);
 
   return (
@@ -44,13 +52,15 @@ export default function ServicePage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-5  gap-4">
         {services.map((service) => (
           <ServiceCard
             serviceName={service.name}
             serviceId={service.id}
             serviceUrl={service.url}
-            isHeathy={service.healthyState === HealthState.HEALTHY}
+            isHeathy={
+              service ? service.healthState === HealthState.HEALTHY : true
+            }
           />
         ))}
       </div>
