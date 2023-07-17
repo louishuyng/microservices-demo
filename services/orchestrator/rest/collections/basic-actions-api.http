@@ -1,0 +1,9 @@
+# Create Action
+POST http://localhost:3002/api/actions
+Content-Type: application/json
+
+{
+  "name": "Generate Token",
+  "apiPath": "/api/jwt",
+  "serviceId": 40,
+}

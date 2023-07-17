@@ -4,6 +4,7 @@ import {
   BaseEntity,
   Column,
   Entity,
+  JoinColumn,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
@@ -20,7 +21,13 @@ export class Action extends BaseEntity {
   @Column({ type: 'varchar' })
   apiPath: string;
 
-  @ManyToOne(() => Service, (service) => service.actions)
+  @Column()
+  serviceId: number;
+
+  @ManyToOne(() => Service, (service) => service.actions, {
+    cascade: true,
+  })
+  @JoinColumn()
   service: Service;
 
   @OneToMany(() => Flow, (flow) => flow.action)
