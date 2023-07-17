@@ -44,8 +44,7 @@ export class ActionController {
   @Get()
   @HttpCode(200)
   async getAction(@Query() query: any): Promise<Action[]> {
-    const { filter_by, filter_value } = query;
-    console.log(query);
+    const { filter_by, filter_value, search } = query;
 
     const select: FindOptionsSelectByString<Action> = [
       'id',
@@ -54,20 +53,30 @@ export class ActionController {
       'serviceId',
     ];
 
-    if (!filter_by || !filter_value) {
+    if (!filter_by && !search) {
       return await this.actionRepository.find({
         select,
       });
     }
 
-    if (filter_by === 'name') {
+    if (search && !filter_by) {
       return await this.actionRepository.find({
-        where: { name: Like(`%${filter_value}%`) },
-        select,
+        where: {
+          name: Like(`%${search}%`),
+        },
       });
     }
 
-    if (filter_by === 'serviceId') {
+    if (search && filter_by && filter_value) {
+      return await this.actionRepository.find({
+        where: {
+          name: Like(`%${search}%`),
+          [filter_by]: filter_value,
+        },
+      });
+    }
+
+    if (filter_by && filter_value) {
       return await this.actionRepository.find({
         select,
         where: { serviceId: filter_value },

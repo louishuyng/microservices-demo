@@ -12,3 +12,12 @@ Content-Type: application/json
 
 # Get Actions without filters
 GET http://localhost:3002/api/actions
+
+# Get Actions with filters
+GET http://localhost:3002/api/actions?filter_by=serviceId&filter_value=40
+
+# Get Actions with search
+GET http://localhost:3002/api/actions?search=Token
+
+# Get Actions with search and filters
+GET http://localhost:3002/api/actions?search=Token&filter_by=serviceId&filter_value=41
