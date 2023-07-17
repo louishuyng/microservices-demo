@@ -1,4 +1,4 @@
-import { IsString, IsNumber } from 'class-validator';
+import { IsString, IsNumber, IsObject } from 'class-validator';
 
 export class CreateActionDto {
   @IsString()
@@ -7,6 +7,6 @@ export class CreateActionDto {
   @IsString()
   apiPath: string;
 
-  @IsNumber()
-  serviceId: number;
+  @IsObject()
+  service: { id: number };
 }

@@ -21,9 +21,6 @@ export class Action extends BaseEntity {
   @Column({ type: 'varchar' })
   apiPath: string;
 
-  @Column()
-  serviceId: number;
-
   @ManyToOne(() => Service, (service) => service.actions, {
     cascade: true,
   })

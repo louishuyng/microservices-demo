@@ -5,5 +5,7 @@ Content-Type: application/json
 {
   "name": "Generate Token",
   "apiPath": "/api/jwt",
-  "serviceId": 40,
+  "service": {
+    "id": 40
+  }
 }
