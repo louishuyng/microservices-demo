@@ -52,7 +52,7 @@ export default function ServicePage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-5  gap-4">
+      <div className="grid grid-cols-5 gap-4">
         {services.map((service) => (
           <ServiceCard
             serviceName={service.name}
