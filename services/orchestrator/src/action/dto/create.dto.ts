@@ -7,6 +7,6 @@ export class CreateActionDto {
   @IsString()
   apiPath: string;
 
-  @IsObject()
-  service: { id: number };
+  @IsNumber()
+  serviceId: number;
 }

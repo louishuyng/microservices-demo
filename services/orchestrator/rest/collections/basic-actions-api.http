@@ -9,3 +9,6 @@ Content-Type: application/json
     "id": 40
   }
 }
+
+# Get Actions without filters
+GET http://localhost:3002/api/actions
