@@ -28,13 +28,13 @@ export function ActionCard({
   function requestMethodColor(): string {
     switch (requestMethod) {
       case RequestMethod.GET:
-        return "cyan";
+        return "text-cyan-300";
       case RequestMethod.PUT:
-        return "orange";
+        return "text-orange-300";
       case RequestMethod.POST:
-        return "green";
+        return "text-green-300";
       case RequestMethod.DELETE:
-        return "red";
+        return "text-red-500";
     }
   }
 
@@ -48,7 +48,7 @@ export function ActionCard({
       </CardHeader>
       <CardContent>
         <div className="flex space-x-2 items-center">
-          <div className={`text-${requestMethodColor()}-300 font-bold`}>
+          <div className={`${requestMethodColor()} font-bold`}>
             {requestMethod}
           </div>
           <div className="text-sm font-gray text-slate-200">{apiPath}</div>
