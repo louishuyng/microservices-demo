@@ -24,6 +24,7 @@ export class CronjobsService {
 
     for (const service of services) {
       this.logger.debug(`Check Health for ${service.name}`);
+      this.logger.debug(`--> Call ${service.healthCheckUrl}`);
 
       try {
         const result = await this.httpService.axiosRef.get(
@@ -38,7 +39,7 @@ export class CronjobsService {
         service.healthState = HealthState.UNHEALTHY;
       } finally {
         this.logger.debug(
-          `Health state for ${service.name}: ${service.healthState}`,
+          `Health state for ${service.name}: ${service.healthState} `,
         );
 
         service.save();

@@ -39,7 +39,7 @@ export class Service extends BaseEntity {
   actions: Action[];
 
   public get healthCheckUrl(): string {
-    return `http://${this.serviceUrl}${this.heathPath}`;
+    return `${this.serviceUrl}${this.heathPath}`;
   }
 
   public get serviceUrl(): string {
