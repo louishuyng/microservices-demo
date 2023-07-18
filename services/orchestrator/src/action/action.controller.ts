@@ -1,11 +1,14 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpException,
   HttpStatus,
+  Param,
   Post,
+  Put,
   Query,
   ValidationPipe,
 } from '@nestjs/common';
@@ -13,6 +16,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Action } from './action.entity';
 import { FindOptionsSelectByString, Like, Repository } from 'typeorm';
 import { CreateActionDto } from './dto/create.dto';
+import { UpdateActionDto } from './dto/update.dto';
 
 @Controller('actions')
 export class ActionController {
@@ -43,7 +47,7 @@ export class ActionController {
 
   @Get()
   @HttpCode(200)
-  async getAction(@Query() query: any): Promise<Action[]> {
+  async getActions(@Query() query: any): Promise<Action[]> {
     const { filter_by, filter_value, search } = query;
 
     const select: FindOptionsSelectByString<Action> = [
@@ -81,6 +85,51 @@ export class ActionController {
         select,
         where: { serviceId: filter_value },
       });
+    }
+  }
+
+  @Get(':id')
+  @HttpCode(200)
+  async getActionById(@Param() params: any): Promise<Action> {
+    const { id } = params;
+
+    const action = await this.actionRepository.findOneBy({ id });
+    return action;
+  }
+
+  @Put(':id')
+  @HttpCode(200)
+  async updateAction(
+    @Param() params: any,
+    @Body(ValidationPipe) updateActionDto: UpdateActionDto,
+  ): Promise<Action> {
+    const { id } = params;
+    try {
+      await this.actionRepository.update({ id }, updateActionDto);
+      return await this.actionRepository.findOneBy({ id });
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+  }
+
+  @Delete(':id')
+  @HttpCode(200)
+  async deleteActionById(@Param() params: any): Promise<void> {
+    const { id } = params;
+    try {
+      await this.actionRepository.delete({ id });
+    } catch (error) {
+      throw new HttpException(
+        {
+          message: error.message,
+        },
+        HttpStatus.BAD_REQUEST,
+      );
     }
   }
 }

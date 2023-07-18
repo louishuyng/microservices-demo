@@ -3,11 +3,10 @@ POST http://localhost:3002/api/actions
 Content-Type: application/json
 
 {
-  "name": "Generate Token",
+  "name": "New Token",
   "apiPath": "/api/jwt",
-  "service": {
-    "id": 40
-  }
+  "requestMethod": "POST",
+  "serviceId": 40
 }
 
 # Get Actions without filters
@@ -21,3 +20,18 @@ GET http://localhost:3002/api/actions?search=Token
 
 # Get Actions with search and filters
 GET http://localhost:3002/api/actions?search=Token&filter_by=serviceId&filter_value=41
+
+# Get Action Detail
+GET http://localhost:3002/api/actions/21
+
+# Update Action
+PUT http://localhost:3002/api/actions/22
+Content-Type: application/json
+
+{
+  "name": "New Updated Token Name"
+}
+
+# Delete Action
+DELETE http://localhost:3002/api/actions/21
+
