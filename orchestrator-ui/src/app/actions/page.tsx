@@ -9,6 +9,7 @@ import { ServiceSelector } from "@/components/service-selector";
 import { HealthState, ServiceModel } from "@/models/service.model";
 import { ActionCard } from "./components/action-card";
 import { RequestMethod } from "@/models/action.model";
+import { ActionNewCard } from "./components/action-new-card";
 
 export default function ActionPage() {
   const [open, setOpen] = useState(false);
@@ -42,7 +43,9 @@ export default function ActionPage() {
                 <TargetIcon className="mr-2 h-4 w-4" /> New Action
               </Button>
             </DialogTrigger>
-            <DialogContent></DialogContent>
+            <DialogContent>
+              <ActionNewCard setOpenDialog={setOpen} />
+            </DialogContent>
           </Dialog>
         </div>
       </div>
@@ -53,21 +56,25 @@ export default function ActionPage() {
 
       <div className="grid grid-cols-3 gap-4">
         <ActionCard
+          actionId={1}
           apiPath="/api/jwt"
           name="Generate Token"
           requestMethod={RequestMethod.POST}
         />
         <ActionCard
+          actionId={2}
           apiPath="/api/jwt/inspect"
           name="Check Active Token"
           requestMethod={RequestMethod.PUT}
         />
         <ActionCard
+          actionId={3}
           apiPath="/api/jwt/inspect"
           name="Delete Active Token"
           requestMethod={RequestMethod.DELETE}
         />
         <ActionCard
+          actionId={4}
           apiPath="/api/jwt/1"
           name="Detail Token"
           requestMethod={RequestMethod.GET}

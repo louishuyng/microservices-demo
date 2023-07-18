@@ -22,9 +22,14 @@ import { ServiceModel } from "@/models/service.model";
 
 interface ServiceSelectorProps extends PopoverProps {
   services: ServiceModel[];
+  showAllSection?: boolean;
 }
 
-export function ServiceSelector({ services, ...props }: ServiceSelectorProps) {
+export function ServiceSelector({
+  services,
+  showAllSection = true,
+  ...props
+}: ServiceSelectorProps) {
   const [open, setOpen] = React.useState(false);
   const [selectedService, setSelectedService] = React.useState<ServiceModel>();
 
@@ -46,7 +51,7 @@ export function ServiceSelector({ services, ...props }: ServiceSelectorProps) {
           <CommandInput placeholder="Search Services..." />
           <CommandEmpty>No Services found.</CommandEmpty>
           <CommandGroup className="pt-0">
-            <CommandItem>All Services</CommandItem>
+            {showAllSection && <CommandItem>All Services</CommandItem>}
           </CommandGroup>
           <CommandGroup heading="Current Services">
             {services.map((service) => (

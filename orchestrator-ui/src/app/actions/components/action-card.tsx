@@ -3,10 +3,11 @@
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { DiscIcon, LightningBoltIcon } from "@radix-ui/react-icons";
-import { RequestMethod } from "@/models/action.model";
+import { RequestMethod, requestMethodColor } from "@/models/action.model";
 import { Button } from "@/components/ui/button";
 
 interface ActionCardProps {
+  actionId: number;
   name: string;
   apiPath: string;
   requestMethod: RequestMethod;
@@ -18,24 +19,12 @@ export function ActionCard({
   apiPath,
   requestMethod,
   serviceId,
+  actionId,
 }: ActionCardProps) {
   const router = useRouter();
 
   function goToDetail() {
-    router.push(`/services/${serviceId}`);
-  }
-
-  function requestMethodColor(): string {
-    switch (requestMethod) {
-      case RequestMethod.GET:
-        return "text-cyan-300";
-      case RequestMethod.PUT:
-        return "text-orange-300";
-      case RequestMethod.POST:
-        return "text-green-300";
-      case RequestMethod.DELETE:
-        return "text-red-500";
-    }
+    router.push(`/actions/${actionId}`);
   }
 
   return (
@@ -48,7 +37,7 @@ export function ActionCard({
       </CardHeader>
       <CardContent>
         <div className="flex space-x-2 items-center">
-          <div className={`${requestMethodColor()} font-bold`}>
+          <div className={`${requestMethodColor(requestMethod)} font-bold`}>
             {requestMethod}
           </div>
           <div className="text-sm font-gray text-slate-200">{apiPath}</div>

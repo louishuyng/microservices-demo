@@ -21,7 +21,7 @@ import { ArrowLeftIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog";
 import { ServiceRemove } from "../components/service-remove";
 import { getService, updateService } from "@/services/service.api";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { ServiceModel } from "@/models/service.model";
 
