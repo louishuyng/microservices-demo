@@ -15,6 +15,19 @@ export const getListAction = async (): Promise<ActionModel[]> => {
   }
 };
 
+export const getAction = async (id: any): Promise<ActionModel | undefined> => {
+  try {
+    const res = await fetch(`${ORCHESTRATOR_URL}/actions/${id}`, {
+      cache: "no-cache",
+    });
+    const data = await res.json();
+
+    return new ActionModel(data);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export type ActionPayload = {
   name: string;
   apiPath: string;
@@ -26,6 +39,25 @@ export const createAction = async (data: ActionPayload): Promise<void> => {
   try {
     await fetch(`${ORCHESTRATOR_URL}/actions`, {
       method: "POST",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+export const updateAction = async (
+  id: any,
+  data: ActionPayload
+): Promise<void> => {
+  try {
+    await fetch(`${ORCHESTRATOR_URL}/actions/${id}`, {
+      method: "PUT",
       cache: "no-cache",
       headers: {
         "Content-Type": "application/json",

@@ -21,7 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { RequestMethod, requestMethodColor } from "@/models/action.model";
-import { HealthState, ServiceModel } from "@/models/service.model";
+import { ServiceModel } from "@/models/service.model";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -29,45 +29,65 @@ import * as z from "zod";
 import { ArrowLeftIcon, Cross2Icon } from "@radix-ui/react-icons";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ActionRemove } from "../components/action-remove";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ActionModel } from "@/models/action.model";
+import { getAction, updateAction } from "@/services/action.api";
+import { getListService } from "@/services/service.api";
+import { toast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(2),
   apiPath: z.string(),
-  requestMethod: z.nativeEnum(RequestMethod),
+  requestMethod: z.string(),
   serviceId: z.number(),
 });
 
 export default function ActionDetail() {
+  const params = useParams();
+  const router = useRouter();
+  const [action, setAction] = useState<ActionModel>();
+  const [services, setServices] = useState<ServiceModel[]>([]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-  const router = useRouter();
-  const [action, setAction] = useState<ActionModel>();
 
-  const services: ServiceModel[] = [
-    {
-      id: 1,
-      name: "Auth",
-      host: "localhost",
-      port: "3000",
-      healthState: HealthState.HEALTHY,
-      url: "",
-    },
-    {
-      id: 1,
-      name: "Payment",
-      host: "localhost",
-      port: "3000",
-      healthState: HealthState.HEALTHY,
-      url: "",
-    },
-  ];
+  async function fetchServices() {
+    "use_server";
+    const services = await getListService();
+    setServices(services);
+  }
+
+  async function fetchAction() {
+    "use_server";
+    const action = await getAction(params.id);
+
+    if (!action) {
+      return;
+    }
+
+    setAction(action);
+
+    form.setValue("name", action.name);
+    form.setValue("apiPath", action.apiPath);
+    form.setValue("requestMethod", action.requestMethod);
+    form.setValue("serviceId", action.serviceId);
+  }
+
+  useEffect(() => {
+    fetchServices();
+    fetchAction();
+  }, []);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     "use_server";
-    console.log(values);
+    await updateAction(params.id, {
+      ...values,
+      requestMethod: values.requestMethod as RequestMethod,
+    });
+    toast({
+      description: "Successfully updated action",
+    });
   }
 
   function goBackToList() {
@@ -131,7 +151,7 @@ export default function ActionDetail() {
               <FormItem>
                 <FormLabel>Request Method</FormLabel>
                 <FormControl>
-                  <Select defaultValue={RequestMethod.GET}>
+                  <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger
                       id="security-level"
                       className="line-clamp-1 w-[160px] truncate"
@@ -166,7 +186,7 @@ export default function ActionDetail() {
                     <ServiceSelector
                       services={services}
                       showAllSection={false}
-                      {...field}
+                      field={field}
                     />
                   </div>
                 </FormControl>

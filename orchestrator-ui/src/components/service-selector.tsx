@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { PopoverProps } from "@radix-ui/react-popover";
 
@@ -33,8 +33,19 @@ export function ServiceSelector({
   field,
   ...props
 }: ServiceSelectorProps) {
-  const [open, setOpen] = React.useState(false);
-  const [selectedService, setSelectedService] = React.useState<ServiceModel>();
+  const [open, setOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<ServiceModel>();
+
+  useEffect(() => {
+    if (!field?.value) {
+      return;
+    }
+
+    const selectedService = services.find(
+      (service) => service.id === field.value
+    );
+    setSelectedService(selectedService);
+  }, [field]);
 
   return (
     <Popover open={open} onOpenChange={setOpen} {...props}>
