@@ -11,7 +11,6 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,8 +24,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useToast } from "@/components/ui/use-toast";
 import { RequestMethod, requestMethodColor } from "@/models/action.model";
-import { HealthState, ServiceModel } from "@/models/service.model";
+import { ServiceModel } from "@/models/service.model";
+import { createAction } from "@/services/action.api";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -35,39 +36,36 @@ import * as z from "zod";
 const formSchema = z.object({
   name: z.string().min(2),
   apiPath: z.string(),
-  requestMethod: z.nativeEnum(RequestMethod),
+  requestMethod: z.string(),
   serviceId: z.number(),
 });
 
-export function ActionNewCard({ setOpenDialog }: { setOpenDialog: any }) {
+export function ActionNewCard({
+  setOpenDialog,
+  services,
+  fetchActions,
+}: {
+  setOpenDialog: any;
+  services: Array<ServiceModel>;
+  fetchActions: any;
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
-
-  const services: ServiceModel[] = [
-    {
-      id: 1,
-      name: "Auth",
-      host: "localhost",
-      port: "3000",
-      healthState: HealthState.HEALTHY,
-      url: "",
-    },
-    {
-      id: 1,
-      name: "Payment",
-      host: "localhost",
-      port: "3000",
-      healthState: HealthState.HEALTHY,
-      url: "",
-    },
-  ];
+  const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     "use_server";
-    console.log(values);
 
+    await createAction({
+      ...values,
+      requestMethod: values.requestMethod as RequestMethod,
+    });
+    toast({
+      description: "Successfully created action",
+    });
     setOpenDialog(false);
+    fetchActions();
   }
 
   return (
@@ -112,7 +110,10 @@ export function ActionNewCard({ setOpenDialog }: { setOpenDialog: any }) {
               <FormItem>
                 <FormLabel>Request Method</FormLabel>
                 <FormControl>
-                  <Select defaultValue={RequestMethod.GET}>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
                     <SelectTrigger
                       id="security-level"
                       className="line-clamp-1 w-[160px] truncate"
@@ -147,7 +148,7 @@ export function ActionNewCard({ setOpenDialog }: { setOpenDialog: any }) {
                     <ServiceSelector
                       services={services}
                       showAllSection={false}
-                      {...field}
+                      field={field}
                     />
                   </div>
                 </FormControl>

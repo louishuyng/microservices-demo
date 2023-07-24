@@ -19,15 +19,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ServiceModel } from "@/models/service.model";
+import { ControllerRenderProps } from "react-hook-form";
 
 interface ServiceSelectorProps extends PopoverProps {
   services: ServiceModel[];
   showAllSection?: boolean;
+  field?: ControllerRenderProps<any, any>;
 }
 
 export function ServiceSelector({
   services,
   showAllSection = true,
+  field,
   ...props
 }: ServiceSelectorProps) {
   const [open, setOpen] = React.useState(false);
@@ -59,6 +62,7 @@ export function ServiceSelector({
                 key={service.id}
                 onSelect={() => {
                   setSelectedService(service);
+                  field?.onChange(service.id);
                   setOpen(false);
                 }}
               >

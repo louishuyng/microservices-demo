@@ -1,37 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { TargetIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { Search } from "@/components/search";
 import { ServiceSelector } from "@/components/service-selector";
-import { HealthState, ServiceModel } from "@/models/service.model";
+import { ServiceModel } from "@/models/service.model";
 import { ActionCard } from "./components/action-card";
-import { RequestMethod } from "@/models/action.model";
+import { ActionModel } from "@/models/action.model";
 import { ActionNewCard } from "./components/action-new-card";
+import { getListAction } from "@/services/action.api";
+import { getListService } from "@/services/service.api";
 
 export default function ActionPage() {
   const [open, setOpen] = useState(false);
+  const [actions, setActions] = useState<ActionModel[]>([]);
+  const [services, setServices] = useState<ServiceModel[]>([]);
 
-  const services: ServiceModel[] = [
-    {
-      id: 1,
-      name: "Auth",
-      host: "localhost",
-      port: "3000",
-      healthState: HealthState.HEALTHY,
-      url: "",
-    },
-    {
-      id: 1,
-      name: "Payment",
-      host: "localhost",
-      port: "3000",
-      healthState: HealthState.HEALTHY,
-      url: "",
-    },
-  ];
+  async function fetchActions() {
+    "use_server";
+    const actions = await getListAction();
+    setActions(actions);
+  }
+
+  async function fetchServices() {
+    "use_server";
+    const services = await getListService();
+    setServices(services);
+  }
+
+  useEffect(() => {
+    fetchServices();
+    fetchActions();
+  }, []);
+
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
@@ -44,7 +47,11 @@ export default function ActionPage() {
               </Button>
             </DialogTrigger>
             <DialogContent>
-              <ActionNewCard setOpenDialog={setOpen} />
+              <ActionNewCard
+                setOpenDialog={setOpen}
+                services={services}
+                fetchActions={fetchActions}
+              />
             </DialogContent>
           </Dialog>
         </div>
@@ -55,30 +62,14 @@ export default function ActionPage() {
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <ActionCard
-          actionId={1}
-          apiPath="/api/jwt"
-          name="Generate Token"
-          requestMethod={RequestMethod.POST}
-        />
-        <ActionCard
-          actionId={2}
-          apiPath="/api/jwt/inspect"
-          name="Check Active Token"
-          requestMethod={RequestMethod.PUT}
-        />
-        <ActionCard
-          actionId={3}
-          apiPath="/api/jwt/inspect"
-          name="Delete Active Token"
-          requestMethod={RequestMethod.DELETE}
-        />
-        <ActionCard
-          actionId={4}
-          apiPath="/api/jwt/1"
-          name="Detail Token"
-          requestMethod={RequestMethod.GET}
-        />
+        {actions.map((action) => (
+          <ActionCard
+            actionId={action.id}
+            apiPath={action.apiPath}
+            name={action.name}
+            requestMethod={action.requestMethod}
+          />
+        ))}
       </div>
     </div>
   );
