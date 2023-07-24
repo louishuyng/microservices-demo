@@ -55,6 +55,7 @@ export class ActionController {
       'name',
       'apiPath',
       'serviceId',
+      'requestMethod',
     ];
 
     if (!filter_by && !search) {

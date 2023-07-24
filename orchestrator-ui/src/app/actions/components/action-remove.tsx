@@ -6,6 +6,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { deleteAction } from "@/services/action.api";
 import { useRouter } from "next/navigation";
 
 export function ActionRemove({ id }: { id: any }) {
@@ -14,6 +15,7 @@ export function ActionRemove({ id }: { id: any }) {
   async function handleDelete() {
     "use_server";
 
+    await deleteAction(id);
     router.replace("/actions");
   }
 

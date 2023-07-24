@@ -1,6 +1,6 @@
 "use client";
 
-import * as React from "react";
+import { useEffect, useState } from "react";
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { PopoverProps } from "@radix-ui/react-popover";
 
@@ -19,19 +19,35 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ServiceModel } from "@/models/service.model";
+import { ControllerRenderProps } from "react-hook-form";
 
 interface ServiceSelectorProps extends PopoverProps {
   services: ServiceModel[];
   showAllSection?: boolean;
+  field?: ControllerRenderProps<any, any>;
+  callbackOnSelect?: (serviceId: number | null) => void;
 }
 
 export function ServiceSelector({
   services,
   showAllSection = true,
+  field,
+  callbackOnSelect,
   ...props
 }: ServiceSelectorProps) {
-  const [open, setOpen] = React.useState(false);
-  const [selectedService, setSelectedService] = React.useState<ServiceModel>();
+  const [open, setOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState<ServiceModel | null>();
+
+  useEffect(() => {
+    if (!field?.value) {
+      return;
+    }
+
+    const selectedService = services.find(
+      (service) => service.id === field.value
+    );
+    setSelectedService(selectedService);
+  }, [field]);
 
   return (
     <Popover open={open} onOpenChange={setOpen} {...props}>
@@ -42,7 +58,7 @@ export function ServiceSelector({
           aria-expanded={open}
           className="flex-1 justify-between md:max-w-[200px] lg:max-w-[300px]"
         >
-          {selectedService ? selectedService.name : "Filter by Service"}
+          {selectedService ? selectedService.name : "All Service"}
           <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
@@ -51,7 +67,25 @@ export function ServiceSelector({
           <CommandInput placeholder="Search Services..." />
           <CommandEmpty>No Services found.</CommandEmpty>
           <CommandGroup className="pt-0">
-            {showAllSection && <CommandItem>All Services</CommandItem>}
+            {showAllSection && (
+              <>
+                <CommandItem
+                  onSelect={() => {
+                    setSelectedService(null);
+                    callbackOnSelect && callbackOnSelect(null);
+                    setOpen(false);
+                  }}
+                >
+                  All Services
+                  <CheckIcon
+                    className={cn(
+                      "ml-auto h-4 w-4",
+                      selectedService?.id ? "opacity-0" : "opacity-100"
+                    )}
+                  />
+                </CommandItem>
+              </>
+            )}
           </CommandGroup>
           <CommandGroup heading="Current Services">
             {services.map((service) => (
@@ -59,6 +93,8 @@ export function ServiceSelector({
                 key={service.id}
                 onSelect={() => {
                   setSelectedService(service);
+                  field?.onChange(service.id);
+                  callbackOnSelect && callbackOnSelect(service.id);
                   setOpen(false);
                 }}
               >
