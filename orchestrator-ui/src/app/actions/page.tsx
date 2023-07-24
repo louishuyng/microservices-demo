@@ -17,10 +17,15 @@ export default function ActionPage() {
   const [open, setOpen] = useState(false);
   const [actions, setActions] = useState<ActionModel[]>([]);
   const [services, setServices] = useState<ServiceModel[]>([]);
+  const [filterOption, setFilterOption] = useState<ListActionOption>({});
+  const [search, setSearch] = useState<string>();
 
-  async function fetchActions(options: ListActionOption) {
+  async function fetchActions(options?: ListActionOption, search?: string) {
     "use_server";
-    const actions = await getListAction(options);
+    const actions = await getListAction({
+      ...options,
+      search,
+    });
     setActions(actions);
   }
 
@@ -32,7 +37,7 @@ export default function ActionPage() {
 
   useEffect(() => {
     fetchServices();
-    fetchActions({});
+    fetchActions();
   }, []);
 
   return (
@@ -57,21 +62,30 @@ export default function ActionPage() {
         </div>
       </div>
       <div className="ml-auto flex items-center space-x-4">
-        <Search />
+        <Search
+          onChange={(search) => {
+            setSearch(search);
+            fetchActions(filterOption, search);
+          }}
+        />
         <ServiceSelector
           services={services}
-          callbackOnSelect={(serviceId) =>
-            fetchActions({
+          callbackOnSelect={(serviceId) => {
+            const options: ListActionOption = {
               filter_by: "serviceId",
               filter_value: serviceId,
-            })
-          }
+            };
+
+            setFilterOption(options);
+            fetchActions(options, search);
+          }}
         />
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        {actions.map((action) => (
+        {actions.map((action, key) => (
           <ActionCard
+            key={key}
             actionId={action.id}
             apiPath={action.apiPath}
             name={action.name}

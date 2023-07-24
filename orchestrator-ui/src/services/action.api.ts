@@ -4,6 +4,7 @@ import { ActionModel, RequestMethod } from "@/models/action.model";
 export interface ListActionOption {
   filter_by?: FilterByAction;
   filter_value?: string | number | null | undefined;
+  search?: string | undefined;
 }
 
 export type FilterByAction = "serviceId";
@@ -11,9 +12,10 @@ export type FilterByAction = "serviceId";
 export const getListAction = async ({
   filter_by,
   filter_value,
+  search,
 }: ListActionOption): Promise<ActionModel[]> => {
   try {
-    let url = `${ORCHESTRATOR_URL}/actions?`;
+    let url = `${ORCHESTRATOR_URL}/actions?search=${search || ""}&`;
 
     if (filter_by && filter_value) {
       url = url + `filter_by=${filter_by}&filter_value=${filter_value}&`;
