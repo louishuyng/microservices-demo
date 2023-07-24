@@ -1,9 +1,25 @@
 import { ORCHESTRATOR_URL } from "./constants";
 import { ActionModel, RequestMethod } from "@/models/action.model";
 
-export const getListAction = async (): Promise<ActionModel[]> => {
+export interface ListActionOption {
+  filter_by?: FilterByAction;
+  filter_value?: string | number | null | undefined;
+}
+
+export type FilterByAction = "serviceId";
+
+export const getListAction = async ({
+  filter_by,
+  filter_value,
+}: ListActionOption): Promise<ActionModel[]> => {
   try {
-    const res = await fetch(`${ORCHESTRATOR_URL}/actions`, {
+    let url = `${ORCHESTRATOR_URL}/actions?`;
+
+    if (filter_by && filter_value) {
+      url = url + `filter_by=${filter_by}&filter_value=${filter_value}&`;
+    }
+
+    const res = await fetch(url, {
       cache: "no-cache",
     });
     const data: [] = await res.json();

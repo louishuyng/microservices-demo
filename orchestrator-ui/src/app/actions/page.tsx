@@ -10,7 +10,7 @@ import { ServiceModel } from "@/models/service.model";
 import { ActionCard } from "./components/action-card";
 import { ActionModel } from "@/models/action.model";
 import { ActionNewCard } from "./components/action-new-card";
-import { getListAction } from "@/services/action.api";
+import { getListAction, ListActionOption } from "@/services/action.api";
 import { getListService } from "@/services/service.api";
 
 export default function ActionPage() {
@@ -18,9 +18,9 @@ export default function ActionPage() {
   const [actions, setActions] = useState<ActionModel[]>([]);
   const [services, setServices] = useState<ServiceModel[]>([]);
 
-  async function fetchActions() {
+  async function fetchActions(options: ListActionOption) {
     "use_server";
-    const actions = await getListAction();
+    const actions = await getListAction(options);
     setActions(actions);
   }
 
@@ -32,7 +32,7 @@ export default function ActionPage() {
 
   useEffect(() => {
     fetchServices();
-    fetchActions();
+    fetchActions({});
   }, []);
 
   return (
@@ -58,7 +58,15 @@ export default function ActionPage() {
       </div>
       <div className="ml-auto flex items-center space-x-4">
         <Search />
-        <ServiceSelector services={services} />
+        <ServiceSelector
+          services={services}
+          callbackOnSelect={(serviceId) =>
+            fetchActions({
+              filter_by: "serviceId",
+              filter_value: serviceId,
+            })
+          }
+        />
       </div>
 
       <div className="grid grid-cols-3 gap-4">
