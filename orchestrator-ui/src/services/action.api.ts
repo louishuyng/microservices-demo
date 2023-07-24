@@ -37,3 +37,15 @@ export const createAction = async (data: ActionPayload): Promise<void> => {
     throw err;
   }
 };
+
+export const deleteAction = async (id: any): Promise<void> => {
+  try {
+    await fetch(`${ORCHESTRATOR_URL}/actions/${id}`, {
+      method: "DELETE",
+      cache: "no-cache",
+    });
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
