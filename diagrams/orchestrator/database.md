@@ -34,11 +34,9 @@ erDiagram
         int usecase_id FK
     }
 
-    Logging {
+    ActionRequest {
         int id PK
-        int usecase_request_id FK "Optional"
-        int usecase_id FK "Optional"
-        int flow_id FK "Optional"
+        int action_id FK
         string path
         json request_body
         json request_header
@@ -51,14 +49,10 @@ erDiagram
     Service ||--o{ Action :defines
     Usecase ||--|{ Flow :includes
 
-    Logging ||--o| UsecaseRequest :match_with
-    Logging |o--o| Usecase :belongs_to
-    Logging |o--o| Flow :belongs_to
-
+    ActionRequest |{--|| Action :belongs_to
 
     Flow }o--|| Action :linked_to
 
     Usecase ||--o{ UsecaseRequest :collects
-
 
 ```

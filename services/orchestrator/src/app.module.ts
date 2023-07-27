@@ -7,10 +7,10 @@ import { UsecaseModule } from './usecase/usecase.module';
 import { ServiceModule } from './service/service.module';
 import { FlowModule } from './flow/flow.module';
 import { UsecaseRequestModule } from './usecase-request/usecase-request.module';
-import { LoggingModule } from './logging/logging.module';
 import * as typeOrmConfig from './typeorm.config';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CronjobsModule } from './cronjobs/cronjobs.module';
+import { ActionRequestModule } from './action-request/action-request.module';
 
 @Module({
   imports: [
@@ -21,8 +21,8 @@ import { CronjobsModule } from './cronjobs/cronjobs.module';
     UsecaseModule,
     FlowModule,
     UsecaseRequestModule,
-    LoggingModule,
     CronjobsModule,
+    ActionRequestModule,
   ],
   controllers: [AppController],
   providers: [AppService],
