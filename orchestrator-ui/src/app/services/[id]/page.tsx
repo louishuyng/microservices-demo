@@ -29,6 +29,7 @@ const formSchema = z.object({
   name: z.string().min(2),
   host: z.string(),
   port: z.string().optional(),
+  heathPath: z.string(),
 });
 export default function ServiceDetail() {
   const params = useParams();
@@ -49,6 +50,7 @@ export default function ServiceDetail() {
     form.setValue("name", service.name);
     form.setValue("host", service.host);
     form.setValue("port", service.port && service.port.toString());
+    form.setValue("heathPath", service.heathPath);
   }
 
   useEffect(() => {
@@ -136,6 +138,20 @@ export default function ServiceDetail() {
                 <FormLabel>Host</FormLabel>
                 <FormControl>
                   <Input placeholder="8080" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="heathPath"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Heath Path</FormLabel>
+                <FormControl>
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

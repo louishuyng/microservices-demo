@@ -10,6 +10,7 @@ export class ServiceModel {
   host: string;
   port?: string;
   healthState: HealthState;
+  heathPath: string;
 
   constructor(service: any) {
     this.id = service.id;
@@ -17,6 +18,7 @@ export class ServiceModel {
     this.host = service.host;
     this.port = service.port;
     this.healthState = service.healthState;
+    this.heathPath = service.heathPath;
   }
 
   get url(): string {

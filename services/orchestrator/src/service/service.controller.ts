@@ -68,7 +68,7 @@ export class ServiceController {
   @HttpCode(200)
   async getServices(): Promise<Service[]> {
     const services = await this.serviceRepository.find({
-      select: ['id', 'name', 'healthState', 'host', 'port'],
+      select: ['id', 'name', 'healthState', 'heathPath', 'host', 'port'],
     });
     return services;
   }

@@ -10,4 +10,8 @@ export class CreateServiceDto {
   @IsNumber()
   @IsOptional()
   port: number;
+
+  @IsString()
+  @IsOptional()
+  heathPath: string;
 }

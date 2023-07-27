@@ -28,6 +28,7 @@ const formSchema = z.object({
   name: z.string().min(2),
   host: z.string(),
   port: z.string().optional(),
+  heathPath: z.string(),
 });
 
 export function ServiceNewCard({
@@ -41,6 +42,9 @@ export function ServiceNewCard({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      heathPath: "/health",
+    },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -105,6 +109,20 @@ export function ServiceNewCard({
                 <FormLabel>Port</FormLabel>
                 <FormControl>
                   <Input placeholder="8080" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="heathPath"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Health Path</FormLabel>
+                <FormControl>
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

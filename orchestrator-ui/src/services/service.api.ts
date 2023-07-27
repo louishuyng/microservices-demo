@@ -46,6 +46,7 @@ export type ServicePayload = {
   name: string;
   host: string;
   port?: number;
+  heathPath: string;
 };
 
 export const createService = async (data: ServicePayload): Promise<void> => {
