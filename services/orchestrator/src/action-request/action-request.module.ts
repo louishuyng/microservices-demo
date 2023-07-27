@@ -1,4 +1,4 @@
 import { Module } from '@nestjs/common';
 
 @Module({})
-export class LoggingModule {}
+export class ActionRequestModule {}

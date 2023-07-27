@@ -1,3 +1,4 @@
+import { ActionRequest } from '../action-request/action-request.entity';
 import { Flow } from '../flow/flow.entity';
 import { Service } from '../service/service.entity';
 import {
@@ -42,4 +43,7 @@ export class Action extends BaseEntity {
 
   @OneToMany(() => Flow, (flow) => flow.action)
   flows: Flow[];
+
+  @OneToMany(() => ActionRequest, (actionRequest) => actionRequest.action)
+  requests: ActionRequest[];
 }

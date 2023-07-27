@@ -6,12 +6,10 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
-import { Usecase } from '../usecase/usecase.entity';
-import { Flow } from '../flow/flow.entity';
-import { UsecaseRequest } from '../usecase-request/usecase-request.entity';
+import { Action } from '../action/action.entity';
 
 @Entity()
-export class Logging extends BaseEntity {
+export class ActionRequest extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -36,12 +34,6 @@ export class Logging extends BaseEntity {
   @Column({ type: 'varchar' })
   ipsrc: string;
 
-  @ManyToOne(() => UsecaseRequest, (usecaseRequest) => usecaseRequest.loggings)
-  usecaseRequest: UsecaseRequest;
-
-  @ManyToOne(() => Usecase, (usecase) => usecase.loggings)
-  usecase: Usecase;
-
-  @ManyToOne(() => Flow, (flow) => flow.loggings)
-  flow: Flow;
+  @ManyToOne(() => Action, (action) => action.requests)
+  action: Action;
 }

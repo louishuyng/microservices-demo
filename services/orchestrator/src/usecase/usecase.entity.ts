@@ -6,7 +6,6 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
-import { Logging } from '../logging/logging.entity';
 import { UsecaseRequest } from '../usecase-request/usecase-request.entity';
 import { Flow } from '../flow/flow.entity';
 
@@ -27,7 +26,4 @@ export class Usecase extends BaseEntity {
 
   @OneToMany(() => UsecaseRequest, (usecaseRequest) => usecaseRequest.usecase)
   usecaseRequests: UsecaseRequest[];
-
-  @OneToMany(() => Logging, (logging) => logging.usecase)
-  loggings: Logging[];
 }
